@@ -1,16 +1,15 @@
-version: '3'
-
+version: "3"
 services:
-  hub:
-    image: "selenium/hub"
-    expose:
-      - "4444"
+  selenium-hub:
+    image: selenium/hub:3.14.0-arsenic
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
 
   chrome:
-    image: selenium/node-chrome
-    links:
-    - selenium-hub:hub
+    image: selenium/node-chrome:3.14.0-arsenic
+    depends_on:
+      - selenium-hub
     environment:
-      HUB_PORT_4444_TCP_ADDR: hub
-    volumes:
-    - /dev/shm:/dev/shm # Mitigates the Chromium issue described at https://code.google.com/p/chromium/issues/detail?id=519952
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
