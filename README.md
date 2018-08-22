@@ -3,23 +3,67 @@
 This repository will store the testing framework used to write the UI-level tests.  It is still in the very 
 early stages; approaches need to be fleshed out and tools developed.
 
-The current resources allow you to spin up a selenium grid and small verification test.  They require an
+The current resources allow you to launch a selenium grid and perform a basic test.  They require an
 element of manual setup for them to work.
 
 ## Getting Started
+### Download The Code
 Clone this repo
 ```
 git clone git@bitbucket.org:wspdigitaluk/ui-testing.git
 ```
 
-Launch a machine with docker installed and ensure that you can access the port 4444 from the host machine.
+### Launch the Selenium Grid
+In a new terminal, launch a machine with docker installed and ensure that you can access the port 4444 from the host machine.
 If doing this using the standard dev-tools vagrant machine, simply add another port-mapping to the `Vagrantfile`.
-
-From the `ui-testing` directory, launch the containers.  The test establishes 5 chrome nodes so we need to 
-launch docker-compose with
+```commandline
+cd <dev-tools-dir>
+vagrant up
+vagrant ssh
 ```
-docker-compose up --scale chrome=5 hub=1
+From the `ui-testing` directory, launch the containers.
+```commandline
+cd <ui-testing-dir>
+docker-compose up
+```
+You should be able to see the output of the containers, including the node showing that it has connected to the hub.
+
+### Activate the virtual environment
+From your host machine, activate the virtual environment in the repo directory.
+
+On windows:
+```commandline
+Scripts\activate
+```
+On Linux/OSX:
+```commandline
+./scripts/activate
 ```
 
-Run the verification file with any python interpreter.  Ensure that you have the `selenium` python module 
-(this is available using `pip`).
+### Verify integrity of the code/environment
+To check all the steps have run so far, kick the unit tests off by running
+```commandline
+python -m unittest
+``` 
+
+### Verify the selenium environment
+To check that the selenium grid has been set up correctly, navigate to `screenpy.abilities.web.tests` 
+and remove the `@skip` annotation from the test method.
+
+Run this method using either the `unittest` CLI or your IDE.
+
+If all is well, you should see the test pass.  There may be resource warnings.  These are being worked on.
+
+## Configuring The Browser Tests
+There are a number of environment variables that can be set to change the browser used to execute the tests.
+
+ | Variable | Description |
+ |----------:|-------------|
+ | SELENIUM_HUB_ADDRESS | Changes the address for the selenium hub. |
+ | SELENIUM_DRIVER_TYPE | Changes the type of browser requested e.g. 'chrome', 'firefox' |
+ | SELENIUM_BROWSER_TIMEOUT | Number of seconds a browser session is allowed to hang while a WebDriver command is running |
+ | SELENIUM_CLEANUP | Specifies how often (in ms) the hub will poll running proxies for timed-out (i.e. hung) threads |
+ | SELENIUM_TIMEOUT | Specifies the timeout before the server automatically kills a session that hasn't had any activity in the last X seconds. The test slot will then be released for another test to use. This is typically used to take care of client crashes. For grid hub/node roles, cleanUpCycle must also be set. |
+ 
+ For more options, the easiest summary can be found in [this thread](https://stackoverflow.com/questions/43395659/properties-for-selenium-grid-hub-node-config)
+ 
