@@ -3,6 +3,7 @@ from unittest import TestCase
 from unittest.mock import patch
 from selenium.webdriver.common.by import By
 
+from ..locators import Locate
 from ..abilities.browse_the_web import BrowseTheWeb
 from ..interactions import *
 from ...core.actor import Actor
@@ -43,6 +44,14 @@ class TestClickInteractions(TestCase):
         mock_actor.return_value.ability_to.assert_called_with(BrowseTheWeb)
         mock_ability.driver.find_element.assert_called_with(By.ID, "element")
 
+    def test_click_can_be_passed_locator_object(self):
+        """
+        The click interaction can be passed an object conforming to the locator interface
+        """
+        interaction = Click.on(Locate.by_xpath("xpath"))
+        self.assertEqual(interaction.locator, "xpath")
+        self.assertEqual(interaction.strategy, By.XPATH)
+
 
 class TestTypeInteractions(TestCase):
 
@@ -81,6 +90,14 @@ class TestTypeInteractions(TestCase):
         mock_actor.return_value.ability_to.assert_called_with(BrowseTheWeb)
         mock_ability.driver.find_element.assert_called_with(By.ID, "element")
         mock_ability.driver.find_element.return_value.send_keys.assert_called_with("burritos are my fave")
+
+    def test_type_can_be_passed_locator_object(self):
+        """
+        The type interaction can be passed an object conforming to the locator interface
+        """
+        interaction = Type.into(Locate.by_xpath("xpath"))
+        self.assertEqual(interaction.locator, "xpath")
+        self.assertEqual(interaction.strategy, By.XPATH)
 
 
 @patch.object(os, 'getenv')
@@ -146,3 +163,11 @@ class TestSelectInteraction(TestCase):
         """
         select = Select.option("one").found(By.ID)
         self.assertEqual(select.locator_strategy, By.ID)
+
+    def test_select_can_be_passed_locator_object(self):
+        """
+        The select interaction can be passed an object conforming to the locator interface
+        """
+        interaction = Select.option("one").from_dropdown(Locate.by_xpath("xpath"))
+        self.assertEqual(interaction.locator, "xpath")
+        self.assertEqual(interaction.locator_strategy, By.XPATH)

@@ -112,7 +112,7 @@ class TestActor(TestCase):
 
     def test_actor_performs_a_task(self):
         """
-        Actors can perform tasks (made up of interactions) if they provide an 'interactions' attribute
+        Actors can perform features (made up of interactions) if they provide an 'interactions' attribute
         """
         interaction = MagicMock()
 

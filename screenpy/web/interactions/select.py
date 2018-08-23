@@ -46,7 +46,11 @@ class Select:
         return self
 
     def from_dropdown(self, locator):
-        self.locator = locator
+        try: # assume conforms to locator interface
+            self.locator = locator.locator
+            self.locator_strategy = locator.strategy
+        except AttributeError:
+            self.locator = locator
         return self
 
     def found(self, strategy):

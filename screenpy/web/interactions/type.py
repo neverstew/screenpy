@@ -11,7 +11,10 @@ class Type:
 
     @classmethod
     def into(cls, locator):
-        return cls(locator)
+        try: # assume conforms to locator interface
+            return cls(locator.locator, locator.strategy)
+        except AttributeError:
+            return cls(locator)
 
     def the_words(self, text):
         self.text = text
