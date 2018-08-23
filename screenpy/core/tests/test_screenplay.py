@@ -2,10 +2,10 @@ from unittest import TestCase
 from unittest.mock import patch as patch
 from unittest.mock import MagicMock
 
-from ...actor import Actor
-from ..abilities.take_notes import TakeNotes
-from ..abilities.draw_pictures import DrawPictures
-from ..interactions.draw_picture import DrawPicture
+from screenpy.core.actor import Actor
+from screenpy.core.tests.abilities.take_notes import TakeNotes
+from screenpy.core.tests.abilities.draw_pictures import DrawPictures
+from screenpy.core.tests.interactions.draw_picture import DrawPicture
 
 
 class TestActor(TestCase):
