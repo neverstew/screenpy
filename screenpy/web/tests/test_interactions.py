@@ -4,10 +4,7 @@ from unittest.mock import patch
 from selenium.webdriver.common.by import By
 
 from ..abilities.browse_the_web import BrowseTheWeb
-from ..interactions.click import Click
-from ..interactions.type import Type
-from ..interactions.open import Open
-from ..interactions.select import Select, Strategy
+from ..interactions import *
 from ...core.actor import Actor
 
 

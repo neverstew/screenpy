@@ -3,8 +3,7 @@ from unittest.mock import patch
 from selenium.webdriver.common.by import By
 
 from ..abilities.browse_the_web import BrowseTheWeb
-from screenpy.web.questions.text import Text
-from screenpy.web.questions.options import Options
+from screenpy.web.questions import *
 from ...core.actor import Actor
 
 
