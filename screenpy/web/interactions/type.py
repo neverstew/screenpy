@@ -17,9 +17,9 @@ class Type:
         self.text = text
         return self
 
-    def finding(self, strategy):
+    def found(self, strategy):
         self.strategy = strategy
         return self
 
-    def perform_as_actor(self, actor):
+    def perform_as(self, actor):
         actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator).send_keys(self.text)

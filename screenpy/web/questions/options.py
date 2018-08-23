@@ -1,20 +1,21 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
 
-from ..abilities.browse_the_web import BrowseTheWeb
+from screenpy.web.abilities.browse_the_web import BrowseTheWeb
 
 
-class Click:
+class Options:
     def __init__(self, locator, strategy=By.CSS_SELECTOR):
         self.locator = locator
         self.strategy = strategy
 
     @classmethod
-    def on(cls, locator):
+    def of(cls, locator):
         return cls(locator)
 
     def found(self, strategy):
         self.strategy = strategy
         return self
 
-    def perform_as(self, actor):
-        actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator).click()
+    def answered_by(self, actor):
+        return Select(actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator)).options

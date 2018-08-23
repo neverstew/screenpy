@@ -76,7 +76,7 @@ class TestActor(TestCase):
     @patch.object(DrawPicture, 'titled')
     def test_actor_attempts_to_perform_interactions(self, mock_draw):
         """
-        Actor calls the 'perform_as_actor' method on the given interactions to enact them
+        Actor calls the 'perform_as' method on the given interactions to enact them
         """
         james = Actor.called("james")
         examples = {
@@ -90,7 +90,7 @@ class TestActor(TestCase):
             with self.subTest(desc):
                 mock_draw.reset_mock()
                 james.attempts_to(interact)
-                self.assertEqual(mock_draw.return_value.perform_as_actor.call_count, len(interact))
+                self.assertEqual(mock_draw.return_value.perform_as.call_count, len(interact))
 
     def test_interactions_not_passed_as_iterable(self):
         """
@@ -130,7 +130,7 @@ class TestActor(TestCase):
             with self.subTest(desc):
                 interaction.reset_mock()
                 Actor.called("attenborough").attempts_to(PerformTask(interactions))
-                self.assertEqual(interaction.perform_as_actor.call_count, len(interactions))
+                self.assertEqual(interaction.perform_as.call_count, len(interactions))
 
     def test_actor_asks_questions_about_their_environment(self):
         """

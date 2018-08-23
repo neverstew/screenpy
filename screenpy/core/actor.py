@@ -35,10 +35,10 @@ class Actor:
             interactions = do_something
         try: # assume interactions is an iterable
             for interaction in interactions:
-                interaction.perform_as_actor(self)
+                interaction.perform_as(self)
         except TypeError:
             try: # assume something is a single interaction
-                do_something.perform_as_actor(self)
+                do_something.perform_as(self)
             except AttributeError:
                 raise TypeError("{} is not an iterable of interactions or a single interaction".format(do_something))
 

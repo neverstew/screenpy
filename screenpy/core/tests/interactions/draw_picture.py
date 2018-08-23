@@ -10,5 +10,5 @@ class DrawPicture:
     def titled(cls, title):
         return cls(title)
 
-    def perform_as_actor(self, actor):
+    def perform_as(self, actor):
         return actor.ability_to(DrawPictures).draw(self.title)
