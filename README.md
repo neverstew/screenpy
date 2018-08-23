@@ -28,22 +28,21 @@ docker-compose up
 ```
 You should be able to see the output of the containers, including the node showing that it has connected to the hub.
 
-### Activate the virtual environment
-From your host machine, activate the virtual environment in the repo directory.
+### Verify the virtual environment
+Ensure you have pipenv installed on your host machine.  If not, grab it with `pip install pipenv`.
 
-On windows:
+From the repo directory, initialise the virtual environment
 ```commandline
-Scripts\activate
+pipenv install
 ```
-On Linux/OSX:
-```commandline
-./scripts/activate
-```
+
+To make use of the virtual environment inside an IDE, ensure that you have set the python interpreter to use
+the one created as part of the pipenv initialisation.  See your IDE docs for more guidance on this. 
 
 ### Verify integrity of the code/environment
 To check all the steps have run so far, kick the unit tests off by running
 ```commandline
-python -m unittest
+pipenv run python -m unittest
 ``` 
 
 ### Verify the selenium environment
