@@ -1,6 +1,6 @@
 from unittest import TestCase, skip
 
-from ....abilities.web.browse_the_web import BrowseTheWeb
+from screenpy.web.abilities.browse_the_web import BrowseTheWeb
 
 
 class TestBrowseTheWebAbility(TestCase):

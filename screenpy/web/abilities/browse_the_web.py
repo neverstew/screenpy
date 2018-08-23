@@ -16,3 +16,6 @@ class BrowseTheWeb:
                 'sessionTimeout': os.getenv("SELENIUM_SESSION_TIMEOUT", "60") # 60 seconds
             }
         )
+
+    def find_element(self, strategy, locator):
+        return self.driver.find_element(strategy, locator)
