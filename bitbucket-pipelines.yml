@@ -13,5 +13,5 @@ pipelines:
         script: # Modify the commands below to build your repository.
           - pip install pipenv
           - pipenv install
-          - pipenv run coverage run -m unittest
-          - pipenv run coverage report --fail-under=93
+          - pipenv run coverage run --source . -m unittest
+          - pipenv run coverage report --fail-under=91
