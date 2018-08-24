@@ -130,9 +130,8 @@ snowden.attempts_to(
 )
 ```
 
-Interactions must implement the `perform_as(actor)` method.
-
-Interactions must call `actor.ability_to(AbilityClass)` before interacting with the system.
+Interactions must implement the `perform_as(actor)` method.  The `perform_as` method must call `actor.ability_to(AbilityClass)`
+before interacting with the system.
 
 It is uncommon for actors to perform interactions - it is much more likely that they will attempt to perform 
 tasks instead.
@@ -163,7 +162,7 @@ snowden.attempts_to(
 ```
 
 
-Tasks must have a `interactions` attribute that returns an iterable containing the interactions to perform. 
+Tasks must have an `interactions` attribute that returns an iterable containing the interactions to perform. 
 
 ### Questions
 Questions are the mechanism through which actors _examine_ their surroudings.  The are subtely different from 
@@ -178,9 +177,8 @@ from screenpy.web.questions import *
 snowden.sees(Text.on(Home.meme_title))
 ```
 
-Questions must implement the `answered_by(actor)` method.
-
-Questions must call `actor.ability_to(AbilityClass)` before interrogating the system. 
+Questions must implement the `answered_by(actor)` method.  This method must call `actor.ability_to(AbilityClass)`
+before interrogating the system. 
 
 ### Web-specific Components
 #### Locators
@@ -201,7 +199,7 @@ my_button = Locate.by_xpath("//button[@id='but']")
 Click.on(my_button)
 ``` 
 
-This important part of this is that it combines the path and the strategy into a single object.  The two are
+The important part of this is that it combines the path and the location strategy into a single object.  The two are
 dependent on each other and should be kept together to avoid nasty bugs creeping in.
 
 #### Page Objects
