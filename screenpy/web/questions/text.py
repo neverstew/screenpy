@@ -10,11 +10,14 @@ class Text:
 
     @classmethod
     def on(cls, locator):
-        return cls(locator)
+        try: # assume conforms to locator interface
+            return cls(locator.locator, locator.strategy)
+        except AttributeError:
+            return cls(locator)
 
     def found(self, strategy):
         self.strategy = strategy
         return self
 
     def answered_by(self, actor):
-        return actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator).text()
+        return actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator).text

@@ -34,7 +34,7 @@ class TestReadInteraction(TestCase):
         The text interaction checks to be enabled and calls driver with correct info
         """
         mock_ability = mock_actor.return_value.ability_to.return_value
-        mock_ability.driver.find_element.return_value.text.return_value = "My$ecretPa$$word"
+        mock_ability.driver.find_element.return_value.text = "My$ecretPa$$word"
 
         randy = Actor.called("randy")
         text_interaction = Text.on("element").found(By.ID)
@@ -43,7 +43,6 @@ class TestReadInteraction(TestCase):
         self.assertEqual(text, "My$ecretPa$$word")
         mock_actor.return_value.ability_to.assert_called_with(BrowseTheWeb)
         mock_ability.driver.find_element.assert_called_with(By.ID, "element")
-        mock_ability.driver.find_element.return_value.text.assert_called_once()
 
 
 class TestOptionsQuestion(TestCase):
