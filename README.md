@@ -6,6 +6,34 @@ early stages; approaches need to be fleshed out and tools developed.
 The current resources allow you to launch a selenium grid and perform a basic test.  They require an
 element of manual setup for them to work.
 
+## Usage
+This repo provides a friendlier way to write tests, based loosely upon [the scrrenplay pattern](https://serenity-js.org/design/screenplay-pattern.html).
+It is primarily designed for use in conjunction with Selenium, but those modules are completely optional.
+
+A simple test might look like
+
+
+```python
+class TestNavigation(TestCase):
+
+    def setUp(self):
+        self.eddy = Actor.called("eddy").who_can(BrowseTheWeb)
+        self.eddy.attempts_to(OpenTheBBCWebsite())
+
+    def test_navigation_to_news(self):
+        self.eddy.attempts_to(
+            Navigate.to_news()
+        )
+
+        heading = self.eddy.sees(
+            Text.on(header.news)
+        )
+
+        self.assertEqual('BBC News', heading)
+
+```
+
+
 ## Getting Started
 ### Download The Code
 Clone this repo
