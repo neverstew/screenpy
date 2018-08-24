@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
@@ -21,4 +22,5 @@ class Options:
         return self
 
     def answered_by(self, actor):
-        return Select(actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator)).options
+        with allure.step("examines dropdown options"):
+            return Select(actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator)).options

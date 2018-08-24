@@ -1,3 +1,4 @@
+import allure
 import os
 import urllib.parse
 
@@ -10,4 +11,8 @@ class Open:
         self.url = urllib.parse.urljoin(base_url, url)
 
     def perform_as(self, actor):
-        actor.ability_to(BrowseTheWeb).driver.get(self.url)
+        with allure.step(self.__str__()):
+            actor.ability_to(BrowseTheWeb).driver.get(self.url)
+
+    def __str__(self):
+        return "Open URL: {}".format(self.url)

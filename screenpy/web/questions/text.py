@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.common.by import By
 
 from screenpy.web.abilities.browse_the_web import BrowseTheWeb
@@ -20,4 +21,5 @@ class Text:
         return self
 
     def answered_by(self, actor):
-        return actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator).text
+        with allure.step("examines element text"):
+            return actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator).text

@@ -1,3 +1,5 @@
+import allure
+from pprint import pformat
 from selenium.webdriver.common.by import By
 
 from ..abilities.browse_the_web import BrowseTheWeb
@@ -25,4 +27,8 @@ class Type:
         return self
 
     def perform_as(self, actor):
-        actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator).send_keys(self.text)
+        with allure.step(self.__str__()):
+            actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator).send_keys(self.text)
+
+    def __str__(self):
+        return "Types text: {}".format(pformat(vars(self)))

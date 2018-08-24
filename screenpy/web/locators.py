@@ -1,3 +1,4 @@
+from pprint import pformat
 from selenium.webdriver.common.by import By
 
 
@@ -5,6 +6,9 @@ class _TypedLocator:
     def __init__(self, strategy, locator):
         self.strategy = strategy
         self.locator = locator
+
+    def __str__(self):
+        return pformat(vars(self))
 
 
 class _ClassNameLocator(_TypedLocator):
