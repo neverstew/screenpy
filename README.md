@@ -57,12 +57,13 @@ If all is well, you should see the test pass.  There may be resource warnings.  
 There are a number of environment variables that can be set to change the browser used to execute the tests.
 
  | Variable | Description |
- |----------:|-------------|
+ |----------|-------------|
  | SELENIUM_HUB_ADDRESS | Changes the address for the selenium hub. |
  | SELENIUM_DRIVER_TYPE | Changes the type of browser requested e.g. 'chrome', 'firefox' |
  | SELENIUM_BROWSER_TIMEOUT | Number of seconds a browser session is allowed to hang while a WebDriver command is running |
  | SELENIUM_CLEANUP | Specifies how often (in ms) the hub will poll running proxies for timed-out (i.e. hung) threads |
  | SELENIUM_TIMEOUT | Specifies the timeout before the server automatically kills a session that hasn't had any activity in the last X seconds. The test slot will then be released for another test to use. This is typically used to take care of client crashes. For grid hub/node roles, cleanUpCycle must also be set. |
+ | APP_BASE_URL | Specifies the base url to use to locate the app. e.g. http://bbc.co.uk/ |
  
  For more options, the easiest summary can be found in [this thread](https://stackoverflow.com/questions/43395659/properties-for-selenium-grid-hub-node-config)
  
