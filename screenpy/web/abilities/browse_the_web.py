@@ -16,3 +16,17 @@ class BrowseTheWeb:
                 'sessionTimeout': os.getenv("SELENIUM_SESSION_TIMEOUT", "60") # 60 seconds
             }
         )
+        self.driver
+
+    def __del__(self):
+        """
+        When ability ceases to be used - ensure all remnants of the driver are removed
+        """
+        try:
+            self.driver.close()
+        except:
+            pass
+        try:
+            self.driver.quit()
+        except:
+            pass
