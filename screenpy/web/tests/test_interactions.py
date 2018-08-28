@@ -1,3 +1,4 @@
+import allure
 import os
 from unittest import TestCase
 from unittest.mock import patch
@@ -7,7 +8,6 @@ from ..locators import Locate
 from ..abilities.browse_the_web import BrowseTheWeb
 from ..interactions import *
 from ...core.actor import Actor
-
 
 class TestClickInteractions(TestCase):
 
@@ -30,8 +30,9 @@ class TestClickInteractions(TestCase):
         """
         self.assertEqual(Click("#element").strategy, By.CSS_SELECTOR)
 
+    @patch.object(allure, 'attach')
     @patch.object(Actor, 'called')
-    def test_click_performance_calls_appropriate_methods(self, mock_actor):
+    def test_click_performance_calls_appropriate_methods(self, mock_actor, mock_attach):
         """
         The click interaction checks to be enabled and calls driver with correct info
         """
@@ -76,8 +77,9 @@ class TestTypeInteractions(TestCase):
         self.assertEqual(Type("#element").strategy, By.CSS_SELECTOR)
         self.assertEqual(Type("#element").text, None)
 
+    @patch.object(allure, 'attach')
     @patch.object(Actor, 'called')
-    def test_type_performance_calls_appropriate_methods(self, mock_actor):
+    def test_type_performance_calls_appropriate_methods(self, mock_actor, mock_attach):
         """
         The Type interaction checks to be enabled and calls driver with correct info
         """
@@ -110,8 +112,9 @@ class TestOpenInteraction(TestCase):
         mock_getenv.return_value = 'http://base_url.com/'
         self.assertEqual(Open("/login").url, "http://base_url.com/login")
 
+    @patch.object(allure, 'attach')
     @patch.object(Actor, 'called')
-    def test_open_performance_calls_appropriate_methods(self, mock_actor, mock_getenv):
+    def test_open_performance_calls_appropriate_methods(self, mock_actor, mock_attach, mock_getenv):
         """
         The Type interaction checks to be enabled and calls driver with correct info
         """

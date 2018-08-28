@@ -16,7 +16,10 @@ class BrowseTheWeb:
                 'sessionTimeout': os.getenv("SELENIUM_SESSION_TIMEOUT", "60") # 60 seconds
             }
         )
-        self.driver
+        print("Selenium session ID: {}".format(self.driver.session_id))
+
+    def get_screenshot(self):
+        return self.driver.get_screenshot_as_png()
 
     def __del__(self):
         """

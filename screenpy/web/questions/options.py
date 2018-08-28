@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from screenpy.web.abilities.browse_the_web import BrowseTheWeb
+from ..helper import save_allure_screenshot_using
 
 
 class Options:
@@ -23,4 +24,5 @@ class Options:
 
     def answered_by(self, actor):
         with allure.step("examines dropdown options"):
+            save_allure_screenshot_using(actor)
             return Select(actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator)).options

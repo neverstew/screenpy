@@ -3,6 +3,7 @@ from pprint import pformat
 from selenium.webdriver.common.by import By
 
 from ..abilities.browse_the_web import BrowseTheWeb
+from ..helper import save_allure_screenshot_using
 
 
 class Type:
@@ -29,6 +30,7 @@ class Type:
     def perform_as(self, actor):
         with allure.step(self.__str__()):
             actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator).send_keys(self.text)
+            save_allure_screenshot_using(actor)
 
     def __str__(self):
         return "Types text: {}".format(pformat(vars(self)))
