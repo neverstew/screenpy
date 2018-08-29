@@ -221,6 +221,7 @@ integrate seamlessly with the pytest runner.
 
 ### Via the command line
 To run the tests via the command line, navigate to the root directory and run
+
 ```commandline
 pipenv run python -m pytest
 ```
