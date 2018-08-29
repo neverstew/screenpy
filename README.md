@@ -72,7 +72,7 @@ the one created as part of the pipenv initialisation.  See your IDE docs for mor
 ### Verify integrity of the code/environment
 To check all the steps have run so far, kick the unit tests off by running
 ```commandline
-pipenv run python -m unittest
+pipenv run python -m pytest
 ```
 
 
@@ -211,6 +211,62 @@ In this framework, they should be used simply as a housing for the [locators](#L
 
 It is advised that elements visually stay roughly in order of how they would appear on the page
 or at least grouped with nearby elements.  This aids readability.
+
+
+
+## Running the tests
+The tests are designed to be executed using pytest.  This gives us a number of benefits, namely, the option to
+add plugins to the test lifecycle.  If your tests are configured to use the built-in `unittest` module - they will
+integrate seamlessly with the pytest runner.
+
+### Via the command line
+To run the tests via the command line, navigate to the root directory and run 
+ ```commandline
+pipenv run python -m pytest
+```
+
+There are other options to run specific modules, as well as configuration options.  See the pytest docs for more.
+
+### Via an IDE
+Most of the development process is spent inside an IDE.  The pytest runner can be configured to run this way with
+minimal setup.
+
+The `conftest.py` file in the root of the project defines the plugins needed when pytest runs.  All pytest commands
+should be run from this directory.
+
+The following is an example of setting up the runner in PyCharm.  Other IDEs will require similar setup.
+
+#### PyCharm
+Open the Run Configuration menu by going to `Run > Edit Configurations...`
+![Run configurations](docs/res/pycharm_run_configs.PNG)
+
+Click the + symbol to add a new configuration.  Select the pytest option.
+![Add pytest configuration](docs/res/pycharm_run_configs_add.PNG)
+
+Edit the settings to follow the pattern shwon below.
+![Configure runner settings](docs/res/pycharm_run_configs_full.PNG)
+* Name = descriptive name of your choosing
+* Target | Module name = Set the target of the pytest command to a specific module - in this example a test file
+* Additional Arguments = Other arguments to pass to the runner.  This adds in the built-in reporting solution.
+* Environment variables
+* Python interpreter = The virtual environment created by pipenv
+* Working directory = Root of the project
+
+Hitting run on this configuration should launch the tests using the pytest configuration we have mandated.
+
+## Reporting
+The framework natively supports the [Allure](http://allure.qatools.ru/) reporting solution.  It's an open-source
+tool for beautiful, configurable reports and it has a plugin for pytest.
+
+To activate the reporting tool, set the `alluredir` flag on your test runner to an output folder.  It will default
+to `/allure-reports`, or you can set it to whatever you want.
+
+ ```commandline
+pipenv run python -m pytest --alluredir=your/path/here
+```
+
+The built-in interactions all hook into the allure step definitions - providing you with more detailed results.
+![Allure Report Example](docs/res/allure_example.PNG)
 
 ## Configuring The Browser Tests
 There are a number of environment variables that can be set to change the browser used to execute the tests.
