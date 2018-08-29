@@ -220,8 +220,8 @@ add plugins to the test lifecycle.  If your tests are configured to use the buil
 integrate seamlessly with the pytest runner.
 
 ### Via the command line
-To run the tests via the command line, navigate to the root directory and run 
- ```commandline
+To run the tests via the command line, navigate to the root directory and run
+```commandline
 pipenv run python -m pytest
 ```
 
@@ -261,7 +261,7 @@ tool for beautiful, configurable reports and it has a plugin for pytest.
 To activate the reporting tool, set the `alluredir` flag on your test runner to an output folder.  It will default
 to `/allure-reports`, or you can set it to whatever you want.
 
- ```commandline
+```commandline
 pipenv run python -m pytest --alluredir=your/path/here
 ```
 
