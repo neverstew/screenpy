@@ -1,0 +1,1 @@
+pytest_plugins = "allure_pytest"

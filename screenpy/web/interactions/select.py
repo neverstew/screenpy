@@ -1,8 +1,11 @@
+import allure
 from enum import Enum
+from pprint import pformat
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select as SelectElement
 
 from ..abilities.browse_the_web import BrowseTheWeb
+from ..helper import save_allure_screenshot_using
 
 
 class Strategy(Enum):
@@ -58,5 +61,10 @@ class Select:
         return self
 
     def perform_as(self, actor):
-        element = actor.ability_to(BrowseTheWeb).driver.find_element(self.locator_strategy, self.locator)
-        _selection_dict[self.select_strategy](element, self.option_to_select)
+        with allure.step(self.__str__()):
+            element = actor.ability_to(BrowseTheWeb).driver.find_element(self.locator_strategy, self.locator)
+            _selection_dict[self.select_strategy](element, self.option_to_select)
+            save_allure_screenshot_using(actor)
+
+    def __str__(self):
+        return "Select dropdown element: {}".format(pformat(vars(self)))

@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 selenium = "*"
 coverage = "*"
+pytest = "*"
+allure-pytest = "*"
 
 [dev-packages]
 

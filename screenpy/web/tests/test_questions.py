@@ -1,3 +1,4 @@
+import allure
 from unittest import TestCase, skip
 from unittest.mock import patch
 from selenium.webdriver.common.by import By
@@ -28,8 +29,9 @@ class TestReadInteraction(TestCase):
         """
         self.assertEqual(Text("#element").strategy, By.CSS_SELECTOR)
 
+    @patch.object(allure, 'attach')
     @patch.object(Actor, 'called')
-    def test_text_question_calls_appropriate_methods(self, mock_actor):
+    def test_text_question_calls_appropriate_methods(self, mock_actor, mock_attach):
         """
         The text interaction checks to be enabled and calls driver with correct info
         """
