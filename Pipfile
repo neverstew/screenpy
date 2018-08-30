@@ -8,6 +8,7 @@ selenium = "*"
 coverage = "*"
 pytest = "*"
 allure-pytest = "*"
+requests = "*"
 
 [dev-packages]
 

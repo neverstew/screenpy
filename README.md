@@ -283,3 +283,17 @@ There are a number of environment variables that can be set to change the browse
  
  For more options, the easiest summary can be found in [this thread](https://stackoverflow.com/questions/43395659/properties-for-selenium-grid-hub-node-config)
  
+### Default Configuration
+
+#### Timeouts
+##### Grid
+The docker-compose file defining the grid sets some properties on the hub and nodes.  More information about what
+environment variables match to each selenium configuration property can be found in the `Dockerfile`s of the images.
+
+The nodes will shut down any browsers that have not received any commands for 60 seconds.  This helps as a fail safe
+to ensure that sessions that hang due to driver/connection mishaps do not prevent the remainder of the tests from 
+executing.
+
+##### Drivers
+The web drivers set an implicit wait time of 5 seconds.  In other words, whenever they try to load a page or find an
+element on a page, they will wait for success for 5 seconds.  After this time, they will throw an error.
