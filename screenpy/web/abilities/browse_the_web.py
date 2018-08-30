@@ -7,16 +7,11 @@ class BrowseTheWeb:
         self.driver = webdriver.Remote(
             command_executor=os.getenv("SELENIUM_HUB_ADDRESS", "http://localhost:4444/wd/hub"),
             desired_capabilities={
-                # Browser capabilities
-                'browserName': os.getenv("SELENIUM_DRIVER_TYPE", "chrome"),
-                # Hub connection capabilities
-                'browserTimeout': os.getenv("SELENIUM_BROWSER_TIMEOUT", "5"), # 5 seconds
-                'cleanUpCycle': os.getenv("SELENIUM_CLEANUP", "5000"), # 5 seconds
-                'timeout': os.getenv("SELENIUM_TIMEOUT", "60"), # 60 seconds
-                'sessionTimeout': os.getenv("SELENIUM_SESSION_TIMEOUT", "60") # 60 seconds
+                'browserName': os.getenv("SELENIUM_DRIVER_TYPE", "chrome")
             }
         )
-        print("Selenium session ID: {}".format(self.driver.session_id))
+        self.driver.implicitly_wait(5) # 5 seconds to poll for any elements on the page
+        self.driver.set_page_load_timeout(5)  # 5 seconds for any page to load
 
     def get_screenshot(self):
         return self.driver.get_screenshot_as_png()
