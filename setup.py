@@ -3,8 +3,10 @@ setup(
     name="screenpy",
     version="0.1",
     packages=find_packages(
-        include=["screenpy"], exclude=["examples", "tests"]
+        'screenpy',
+        exclude=["examples", "tests"]
     ),
+    package_dir={'':'screenpy'},
     install_requires=[
         "selenium",
         "pytest",
