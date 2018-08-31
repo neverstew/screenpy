@@ -2,11 +2,7 @@ from setuptools import setup, find_packages
 setup(
     name="screenpy",
     version="0.1",
-    packages=find_packages(
-        'screenpy',
-        exclude=["examples", "tests"]
-    ),
-    package_dir={'':'screenpy'},
+    packages=["screenpy", "screenpy.core", "screenpy.web"],
     install_requires=[
         "selenium",
         "pytest",
