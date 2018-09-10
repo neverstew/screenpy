@@ -5,12 +5,12 @@ name = "pypi"
 
 [packages]
 selenium = "*"
-coverage = "*"
 pytest = "*"
 allure-pytest = "*"
-requests = "*"
 
 [dev-packages]
+coverage = "*"
+requests = "*"
 
 [requires]
 python_version = "3.7"

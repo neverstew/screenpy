@@ -63,7 +63,7 @@ Ensure you have pipenv installed on your host machine.  If not, grab it with `pi
 
 From the repo directory, initialise the virtual environment
 ```commandline
-pipenv install
+pipenv install -d
 ```
 
 To make use of the virtual environment inside an IDE, ensure that you have set the python interpreter to use

@@ -12,7 +12,7 @@ pipelines:
           - pip
         script: # Modify the commands below to build your repository.
           - pip install pipenv
-          - pipenv install
+          - pipenv install -d
           - pipenv run coverage run -m pytest --alluredir=reports/allure
           - pipenv run coverage report
         artifacts:
