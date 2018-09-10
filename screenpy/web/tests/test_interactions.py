@@ -105,12 +105,19 @@ class TestTypeInteractions(TestCase):
 @patch.object(os, 'getenv')
 class TestOpenInteraction(TestCase):
 
-    def test_open_constructed_with_url(self, mock_getenv):
+    def test_open_constructed_with_relative_url(self, mock_getenv):
         """
         open interaction is constructed with relative url
         """
         mock_getenv.return_value = 'http://base_url.com/'
         self.assertEqual(Open("/login").url, "http://base_url.com/login")
+
+    def test_open_constructed_with_absolute_url(self, mock_getenv):
+        """
+        open interaction is constructed with absolute url and overrides env var
+        """
+        mock_getenv.return_value = 'http://base_url.com/login'
+        self.assertEqual(Open("http://someothersite.com").url, "http://someothersite.com")
 
     @patch.object(allure, 'attach')
     @patch.object(Actor, 'called')
