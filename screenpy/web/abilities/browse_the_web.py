@@ -4,12 +4,15 @@ from selenium import webdriver
 
 class BrowseTheWeb:
     def __init__(self):
+        is_remote_driver = os.getenv("SELENIUM_REMOTE", False)
+
         self.driver = webdriver.Remote(
             command_executor=os.getenv("SELENIUM_HUB_ADDRESS", "http://localhost:4444/wd/hub"),
             desired_capabilities={
                 'browserName': os.getenv("SELENIUM_DRIVER_TYPE", "chrome")
             }
-        )
+        ) if is_remote_driver else webdriver.Chrome()
+
         self.driver.implicitly_wait(5) # 5 seconds to poll for any elements on the page
         self.driver.set_page_load_timeout(5)  # 5 seconds for any page to load
 
