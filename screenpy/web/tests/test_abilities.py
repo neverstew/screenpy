@@ -1,5 +1,7 @@
 from unittest import TestCase, skipUnless
+from unittest.mock import patch
 from urllib import parse
+from selenium import webdriver
 from selenium.common.exceptions import WebDriverException, NoSuchElementException
 import os
 import requests
@@ -31,6 +33,25 @@ class TestBrowseTheWebAbility(TestCase):
         self.ability = BrowseTheWeb()
         self.ability.driver.get("http://www.google.com")
         self.assertTrue(self.ability.driver.title, "Google")
+
+    @patch.object(webdriver, "Chrome")
+    def test_local_driver_chrome_by_default(self, mock_driver):
+        """
+        Unless specified, the driver should be generated as a local chrome driver
+        """
+        self.ability = BrowseTheWeb()
+        mock_driver.assert_called_once()
+
+    @patch.object(webdriver, "Remote")
+    @patch.object(os, "getenv")
+    def test_remote_driver(self, mock_getenv, mock_driver):
+        """
+        When SELENIUM_REMOTE is specified as True, the driver should be generated as a remote chrome driver
+        """
+        mock_getenv.return_value = 'True'
+
+        self.ability = BrowseTheWeb()
+        mock_driver.assert_called_once()
 
     def test_driver_timeout(self):
         """
