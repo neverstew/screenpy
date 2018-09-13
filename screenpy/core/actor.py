@@ -29,21 +29,24 @@ class Actor:
             raise AttributeError("{} doesn't have the ability to {}".format(self.name, get_ability_class_name(do_something)))
 
     def attempts_to(self, do_something):
-        try: # assume something is a task
-            interactions = do_something.interactions
-        except AttributeError:
-            interactions = do_something
-        try: # assume interactions is an iterable
-            for interaction in interactions:
-                interaction.perform_as(self)
-        except TypeError:
-            try: # assume something is a single interaction
+        try:  # iterable? split out
+            for something in do_something:
+                self.attempts_to(something)
+        except TypeError:  # not iterable
+            if hasattr(do_something, 'interactions'):  # task? attempt interactions
+                self.attempts_to(do_something.interactions)
+            elif hasattr(do_something, 'perform_as'):  # interaction? perform it
                 do_something.perform_as(self)
-            except AttributeError:
-                raise TypeError("{} is not an iterable of interactions or a single interaction".format(do_something))
+            else:
+                raise TypeError("Actor tried to do something that was neither an iterable, "
+                                "task object or interaction object. Object passed to attempts_to: {}"
+                                .format(do_something))
 
     def sees(self, question):
         return question.answered_by(self)
+
+    def __repr__(self):
+        return "{}:{{ abilities: {}}}".format(self.name, self.abilities)
 
 
 # grabbed from https://stackoverflow.com/questions/1175208/elegant-python-function-to-convert-camelcase-to-snake-case
