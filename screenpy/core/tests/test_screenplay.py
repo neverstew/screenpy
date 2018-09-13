@@ -73,24 +73,25 @@ class TestActor(TestCase):
         self.assertTrue(isinstance(ability, DrawPictures),
                         "ability {} not instance of {}".format(ability, DrawPictures.__name__))
 
-    @patch.object(DrawPicture, 'titled')
-    def test_actor_attempts_to_perform_interactions(self, mock_draw):
+    def test_actor_attempts_to_perform_single_interaction(self):
         """
         Actor calls the 'perform_as' method on the given interactions to enact them
         """
+        interaction = Interaction()
+
         james = Actor.called("james")
-        examples = {
-            "actor performs single interaction":
-                [DrawPicture.titled('masterpiece')],
-            "actor performs multiple interactions":
-                [DrawPicture.titled('masterpiece'),
-                 DrawPicture.titled('poor sequel')]
-        }
-        for desc, interact in examples.items():
-            with self.subTest(desc):
-                mock_draw.reset_mock()
-                james.attempts_to(interact)
-                self.assertEqual(mock_draw.return_value.perform_as.call_count, len(interact))
+        james.attempts_to(interaction)
+        self.assertEqual(interaction.call_count, 1)
+
+    def test_actor_attempts_to_perform_multiple_interactions(self):
+        """
+        Actor calls the 'perform_as' method on the given interactions to enact them
+        """
+        interaction = Interaction()
+
+        james = Actor.called("james")
+        james.attempts_to([interaction, interaction])
+        self.assertEqual(interaction.call_count, 2)
 
     def test_interactions_not_passed_as_iterable(self):
         """
@@ -103,34 +104,40 @@ class TestActor(TestCase):
                 DrawPicture.titled("swans on holiday")
             )
 
-    def test_can_perform_single_action_not_as_iterable(self):
+    def test_actor_attempts_to_perform_tasks(self):
         """
-        A single, non-iterable, item can be attempted without blowing up
+        Actors can perform tasks (made up of interactions) if they provide an 'interactions' attribute
         """
-        reginald = Actor.called("reginald").who_can(DrawPictures)
-        reginald.attempts_to(DrawPicture.titled("memories of lie-ins"))
-
-    def test_actor_performs_a_task(self):
-        """
-        Actors can perform features (made up of interactions) if they provide an 'interactions' attribute
-        """
-        interaction = MagicMock()
-
-        class PerformTask:
-            def __init__(self, things):
-                self.interactions = things
+        interaction = Interaction()
 
         examples = {
-            "task with one interaction": interaction,
-            "task with one interaction in list": [interaction],
-            "task with multiple interactions": [interaction, interaction, interaction]
+            "one task with one interaction": ([PerformTask([interaction])], 1),
+            "one task with multiple interactions": ([PerformTask([interaction, interaction, interaction])], 3),
+            "multiple tasks with multiple interactions": ([
+                PerformTask([interaction, interaction, interaction]),
+                PerformTask([interaction, interaction, interaction])
+            ], 6)
         }
 
-        for desc, interactions in examples.items():
+        for desc, (interactions, expected_call_count) in examples.items():
             with self.subTest(desc):
-                interaction.reset_mock()
+                interaction.reset()
                 Actor.called("attenborough").attempts_to(PerformTask(interactions))
-                self.assertEqual(interaction.perform_as.call_count, len(interactions))
+                self.assertEqual(interaction.call_count, expected_call_count)
+
+    def test_actor_attempts_to_perform_arbitrary_mixture_of_interactions(self):
+        """
+        Actors can perform tasks (made up of interactions) if they provide an 'interactions' attribute
+        """
+        interaction = Interaction()
+
+        Actor.called("harriet").attempts_to([
+            PerformTask([interaction]),
+            interaction,
+            [interaction, interaction],
+            PerformTask([interaction, interaction])
+        ])
+        self.assertEqual(interaction.call_count, 6)
 
     def test_actor_asks_questions_about_their_environment(self):
         """
@@ -148,3 +155,20 @@ class TestActor(TestCase):
                 return 99
 
         self.assertEqual(Actor.called("nena").sees(NumberOfRedBalloons.left()), 99)
+
+
+class Interaction:
+    def __init__(self):
+        self.call_count = 0
+
+    def perform_as(self, _):
+        self.call_count += 1
+
+    def reset(self):
+        self.call_count = 0
+
+
+class PerformTask:
+    def __init__(self, *things):
+
+        self.interactions = [thing for thing in things]
