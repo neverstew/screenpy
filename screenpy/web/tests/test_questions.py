@@ -1,4 +1,5 @@
 import allure
+import os
 from unittest import TestCase, skip
 from unittest.mock import patch
 from selenium.webdriver.common.by import By
@@ -84,3 +85,21 @@ class TestOptionsQuestion(TestCase):
         self.assertEqual(text, ["one", "two"])
         mock_actor.return_value.ability_to.assert_called_with(BrowseTheWeb)
         mock_ability.driver.find_element.assert_called_with(By.ID, "element")
+
+
+class TestURLQuestion(TestCase):
+    @patch.object(allure, 'attach')
+    @patch.object(Actor, 'called')
+    def test_url_answer_calls_appropriate_methods(self, mock_actor, mock_attach):
+        """
+        The URL question checks to be enabled and calls driver with correct info
+        """
+        mock_ability = mock_actor.return_value.ability_to.return_value
+        mock_ability.driver.current_url = "this"
+
+        timmy = Actor.called("jimmy")
+        question = URL()
+        answer = question.answered_by(timmy)
+
+        self.assertEqual("this", answer)
+        mock_actor.return_value.ability_to.assert_called_with(BrowseTheWeb)

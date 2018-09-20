@@ -1,4 +1,5 @@
 import allure
+from pprint import pformat
 from selenium.webdriver.common.by import By
 
 from screenpy.web.abilities.browse_the_web import BrowseTheWeb
@@ -22,6 +23,9 @@ class Text:
         return self
 
     def answered_by(self, actor):
-        with allure.step("examines element text"):
+        with allure.step(self.__str__()):
             save_allure_screenshot_using(actor)
             return actor.ability_to(BrowseTheWeb).driver.find_element(self.strategy, self.locator).text
+
+    def __str__(self):
+        return "examines element text on {}".format(pformat(vars(self)))
