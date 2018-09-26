@@ -26,3 +26,4 @@ principles.
    tutorial/index
    components/index
    reporting/index
+   django/index
