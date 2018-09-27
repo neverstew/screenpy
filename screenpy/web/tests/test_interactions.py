@@ -9,6 +9,7 @@ from ..abilities.browse_the_web import BrowseTheWeb
 from ..interactions import *
 from ...core.actor import Actor
 
+
 class TestClickInteractions(TestCase):
 
     def test_click_constructed_with_locator_and_strategy(self):
@@ -100,6 +101,39 @@ class TestTypeInteractions(TestCase):
         interaction = Type.into(Locate.by_xpath("xpath"))
         self.assertEqual(interaction.locator, "xpath")
         self.assertEqual(interaction.strategy, By.XPATH)
+
+
+class TestClearInteractions(TestCase):
+
+    def test_clear_constructed_with_locator_and_strategy(self):
+        """
+        Type interaction can be constructed either: directly, using class methods
+        """
+        examples = {
+            "clear constructed with constructor": Clear("element", strategy=By.CSS_SELECTOR),
+            "clear constructed using class method, text and strategy": Clear.the("element"),
+            "clear constructed using class method and Locator": Clear.the(Locate.by_css("element"))
+        }
+        for desc, clear in examples.items():
+            with self.subTest(desc):
+                self.assertEqual(clear.locator, "element")
+                self.assertEqual(clear.strategy, By.CSS_SELECTOR)
+
+    @patch.object(allure, 'attach')
+    @patch.object(Actor, 'called')
+    def test_clear_performance_calls_appropriate_methods(self, mock_actor, mock_attach):
+        """
+        The Type interaction checks to be enabled and calls driver with correct info
+        """
+        mock_ability = mock_actor.return_value.ability_to.return_value
+
+        harold = Actor.called("harold")
+        clear_interaction = Clear.the("element")
+        clear_interaction.perform_as(harold)
+
+        mock_actor.return_value.ability_to.assert_called_with(BrowseTheWeb)
+        mock_ability.driver.find_element.assert_called_with(By.CSS_SELECTOR, "element")
+        mock_ability.driver.find_element.return_value.clear.assert_called_once()
 
 
 @patch.object(os, 'getenv')
