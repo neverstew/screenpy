@@ -1,11 +1,11 @@
 import allure
-import os
 from unittest import TestCase, skip
 from unittest.mock import patch
 from selenium.webdriver.common.by import By
 
 from ..abilities.browse_the_web import BrowseTheWeb
 from screenpy.web.questions import *
+from screenpy.web.locators import Locate
 from ...core.actor import Actor
 
 
@@ -103,3 +103,35 @@ class TestURLQuestion(TestCase):
 
         self.assertEqual("this", answer)
         mock_actor.return_value.ability_to.assert_called_with(BrowseTheWeb)
+
+
+class TestClassQuestion(TestCase):
+    def test_class_constructed_with_locator_and_strategy(self):
+        """
+        Clear question can be constructed either: directly, using class methods
+        """
+        examples = {
+            "class constructed with constructor": Class("element", strategy=By.CSS_SELECTOR),
+            "class constructed using class method, text and strategy": Class.on("element"),
+            "class constructed using class method and Locator": Class.on(Locate.by_css("element"))
+        }
+        for desc, classs in examples.items():
+            with self.subTest(desc):
+                self.assertEqual(classs.locator, "element")
+                self.assertEqual(classs.strategy, By.CSS_SELECTOR)
+
+    @patch.object(allure, 'attach')
+    @patch.object(Actor, 'called')
+    def test_clear_performance_calls_appropriate_methods(self, mock_actor, mock_attach):
+        """
+        The class question checks to be enabled and calls driver with correct info
+        """
+        mock_ability = mock_actor.return_value.ability_to.return_value
+
+        konrad = Actor.called("konrad")
+        class_question = Class.on("element")
+        class_question.answered_by(konrad)
+
+        mock_actor.return_value.ability_to.assert_called_with(BrowseTheWeb)
+        mock_ability.driver.find_element.assert_called_with(By.CSS_SELECTOR, "element")
+        mock_ability.driver.find_element.return_value.get_attribute.assert_called_once_with('class')
