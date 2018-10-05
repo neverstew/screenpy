@@ -1,6 +1,6 @@
 import allure
 from unittest import TestCase, skip
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from selenium.webdriver.common.by import By
 
 from ..abilities.browse_the_web import BrowseTheWeb
@@ -9,7 +9,7 @@ from screenpy.web.locators import Locate
 from ...core.actor import Actor
 
 
-class TestReadInteraction(TestCase):
+class TestTextQuestion(TestCase):
 
     def test_text_constructed_with_locator_and_strategy(self):
         """
@@ -17,7 +17,8 @@ class TestReadInteraction(TestCase):
         """
         examples = {
             "text constructed with constructor": Text("element", strategy=By.ID),
-            "text constructed using class method, text and strategy": Text.on("element").found(By.ID)
+            "text constructed using class method, text and strategy": Text.on("element").found(By.ID),
+            "text constructed using class method for multiple elements": Text.on_all("element").found(By.ID)
         }
         for desc, text in examples.items():
             with self.subTest(desc):
@@ -46,6 +47,24 @@ class TestReadInteraction(TestCase):
         self.assertEqual(text, "My$ecretPa$$word")
         mock_actor.return_value.ability_to.assert_called_with(BrowseTheWeb)
         mock_ability.driver.find_element.assert_called_with(By.ID, "element")
+
+    @patch.object(allure, 'attach')
+    @patch.object(Actor, 'called')
+    def test_text_question_calls_text_multiple_times_for_collections_of_elements(self, mock_actor, mock_attach):
+        """
+        The text interaction checks to be enabled and calls driver with correct info
+        """
+        mock_ability = mock_actor.return_value.ability_to.return_value
+        mock_elements = [MagicMock(text=str(x)) for x in range(1, 3)]
+        mock_ability.driver.find_elements.return_value = mock_elements
+
+        leroy = Actor.called("leroy")
+        text_interaction = Text.on_all("element").found(By.ID)
+        text = text_interaction.answered_by(leroy)
+
+        self.assertEqual(text, ["1", "2"])
+        mock_actor.return_value.ability_to.assert_called_with(BrowseTheWeb)
+        mock_ability.driver.find_elements.assert_called_once_with(By.ID, "element")
 
 
 class TestOptionsQuestion(TestCase):
