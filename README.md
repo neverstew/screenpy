@@ -6,17 +6,11 @@ Please see https://screenpy.readthedocs.io/en/latest/ for the latest user docume
 This repository includes a sample selenium grid docker-compose definition file.
 
 In a new terminal, launch a machine with docker installed and ensure that you can access the port 4444 from the host machine.
-If doing this using the standard dev-tools vagrant machine, simply add another port-mapping to the `Vagrantfile`.
+
+From the `screenpy` directory, launch the containers.
 
 ```commandline
-cd <dev-tools-dir>
-vagrant up
-vagrant ssh
-```
-From the `ui-testing` directory, launch the containers.
-
-```commandline
-cd <ui-testing-dir>
+cd screenpy
 docker-compose up
 ```
 You should be able to see the output of the containers, including the node showing that it has connected to the hub.
