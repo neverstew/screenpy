@@ -28,7 +28,7 @@ def _select_by_text(element, option):
 
 _selection_dict = {
     Strategy.value: _select_by_value,
-    Strategy.index: _select_by_text,
+    Strategy.index: _select_by_index,
     Strategy.text: _select_by_text
 }
 
